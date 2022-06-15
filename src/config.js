@@ -4,7 +4,7 @@ function config() {
             name: 'default',
             img_width: 10978,
             img_height: 9062,
-            img_depth: 15 * 3.8462 * 0.9,
+            img_depth: 40 * 3.8462 * 0.9,
             particle_size: 8000.0,
             // zThres: 1500.0,
             geneData: 'https://api.github.com/repos/MathieuBo/iss_viewer/contents/data/geneData?ref=master',
