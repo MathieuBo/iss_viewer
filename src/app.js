@@ -1,5 +1,4 @@
 function app(geneData, cellData) {
-
     geneData = geneData.sort((a, b) => (a.z > b.z) ? 1 : -1);
 
     var cellColorRamp = classColorsCodes();
@@ -11,6 +10,8 @@ function app(geneData, cellData) {
         d.topClass = d.ClassName[maxIndex(d.Prob)]; // Keeps the class with the highest probability
         d.color = hexToRgb(cellColorMap.get(d.topClass).color)
     });
+    TOPCLASSES = [...new Set(cellData.map(d => d.topClass))].sort()
+
 
     // convert scale, rotation, position to a Vector3
     cellData.forEach((d, i) =>  {
@@ -30,12 +31,22 @@ function app(geneData, cellData) {
     // loop over the genes and collect in one array the coords for each spot
     for (var i = 0; i < GENEPANEL.length; i++) {
         var g = GENEPANEL[i];
+        var dg = data[g]
+        var background_idx = data[g].map((e, i) => e.neighbour === 0 ? i : '').filter(e => e !== '');   //positions of the spots assigned to some cell
+        var non_background_idx = data[g].map((e, i) => e.neighbour !== 0 ? i : '').filter(e => e !== '');  //positions of the background spots
 
+        var background = background_idx.map(d => dg[d]);
+        var non_background = non_background_idx.map(d => dg[d]);
+        var gene_spots = non_background.concat(background)
         // CAREFULL HERE. Division by 3 and multiplying by 6 is only for this particular dataset!!!
         // var temp = new Float32Array(data[g].map(d => [d.x/6 - img_width / 2, img_height - d.y/6 - img_height / 2, d.z/6 - img_depth / 2]).flat());
 
-        var temp = new Float32Array(data[g].map(d => centralise_coords([d.x, d.y, d.z], CONFIGSETTINGS)).flat());
+        var temp = new Float32Array(gene_spots.map(d => centralise_coords([d.x, d.y, d.z], CONFIGSETTINGS)).flat());
         SPOTS_ARR.push(temp)
+        SPOT_COUNTS[g] = {
+            "non_background": non_background.length,
+            "total": background.length + non_background.length
+        }
     }
 
     iniScene();

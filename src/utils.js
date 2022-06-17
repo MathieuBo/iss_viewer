@@ -356,3 +356,98 @@ function _hsv2hex(hsvH, hsvS, hsvV) {
 //     }
 //     scales.needsUpdate = true; // important!
 // }
+
+function tree(data) {
+    // makes the tree object to pass into the tree control as an overlay
+    var mapper = {},
+        root = {
+            text: 'Cell Classes',
+            children: [],
+            icon: false,
+        };
+
+    for (var str of data) {
+        var sep = '.',
+            splits,
+            text = '';
+        // let splits = str.match(/[a-zA-Z]+|[0-9]+/g), //str.split('.'),
+        if (sep === '') {
+            console.log('Assuming that class name is a string followed by a number, like Astro1, Astro2 etc');
+            splits = str.match(/[a-zA-Z]+|[0-9]+/g) //str.split('.'),
+        } else {
+            splits = str.split(sep)
+        };
+        splits.reduce(myReducer(text), root)
+    }
+
+    function myReducer(label) {
+        return function (parent, place, i, arr) {
+            if (label) {
+                var sep = '.';
+                label += sep + `${place}`; // `.${place}`;
+            } else
+                label = place;
+
+            if (!mapper[label]) {
+                var o = {text: label};
+                o.opened = false;
+                o.icon = false;
+                if (i === arr.length - 1) {
+                    // o.layer = cellContainer_array.filter(d => d.name === label)[0]
+                }
+                mapper[label] = o;
+                parent.opened = false;
+                parent.icon = false,
+                parent.children = parent.children || [];
+                parent.children.push(o)
+            }
+            return mapper[label];
+        }
+    }
+
+    return root
+}
+
+function class_to_color_helper(x){
+    return classColorsCodes().filter(el => el.className.startsWith(x)).map(d => d.color)
+}
+
+function class_to_color(x) {
+    var out = [...new Set(x.map(d => class_to_color_helper(d))[0])];
+    out = [...new Set(out)]
+    return out
+}
+
+
+function toggle_background_spots(){
+    console.log("pressed")
+    if (document.querySelector('#exampleCheck1:checked') !== null) {
+        hide_background_spots()
+    }
+    else{
+        show_background_spots()
+    }
+}
+
+function hide_background_spots() {
+    // loop over the genes
+    var names = Object.keys(SPOT_COUNTS)
+    for (var i = 0; i < names.length; ++i) {
+        var name = names[i]
+        var counts = SPOT_COUNTS[name]["non_background"]
+        SCENE.children.filter(d => d.name === name)[0].geometry.attributes.position.count = counts
+
+    }
+}
+
+function show_background_spots(){
+    // loop over the genes
+    var names = Object.keys(SPOT_COUNTS)
+    for (var i=0; i<names.length; ++i){
+        var name = names[i]
+        var counts = SPOT_COUNTS[name]["total"]
+        SCENE.children.filter(d => d.name === name)[0].geometry.attributes.position.count = counts
+
+    }
+
+}

@@ -38,6 +38,9 @@ function postScene() {
     // and show the gene panel button
     legendControl();
 
+    //
+    populate_jstree()
+
     function onMouseMove(event) {
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
@@ -65,6 +68,14 @@ function postScene() {
         var factor = 1000.0;
         CAMERA.position.addVectors(CAMERA.position, vector.setLength(factor));
         CONTROLS.target.addVectors(CONTROLS.target, vector.setLength(factor));
+    }
+
+    function populate_jstree(){
+        // var cellClasses = [...new Set(CELL_DATA.map(d => d.topClass))].sort()
+        $('#jstree_id').jstree(true).settings.core.data = [tree(TOPCLASSES)]
+        $('#jstree_id').jstree(true).refresh();
+
+        $("#jstree_id").jstree("close_all");
     }
 
 

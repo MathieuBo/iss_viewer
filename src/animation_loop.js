@@ -5,7 +5,7 @@ var attributes;
 function animate() {
     requestAnimationFrame(animate);
     render();
-    stats.update();
+    // stats.update();
 }
 
 function setHightlightSphere(instanceId, isHighlighting) {

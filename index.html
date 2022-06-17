@@ -66,9 +66,9 @@
     <script type="text/javascript" src="src/ami.js"></script>
     <!--    <script src='three.js/examples/js/controls/PointerLockControls.js'></script>-->
 
-    <link href="src/lib/css/jquery.bonsai.css" rel="stylesheet">
-    <script src="src/lib/js/jquery.bonsai.js"></script>
-    <script src="src/lib/js/jquery.qubit.js"></script>
+    <!-- jstree -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
     <link rel="stylesheet" href="src/lib/css/index.css">
     <script src="src/index.js"></script>
@@ -127,13 +127,14 @@
             right: 10px;
         }
 
-        #class_tree {
+        #jstree_id {
             position: absolute;
             top: 70px;
             left: 10px;
             color: lightgray;
             z-index: 100000;
         }
+
 
     </style>
 
@@ -199,6 +200,17 @@
         <script>$('#wait_chart').hide()</script>
     </div>
 </div>
+
+<div id="legend_2" class="map-content">
+<form>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" onchange="toggle_background_spots()">
+        <label class="form-check-label" for="exampleCheck1">Hide background spots</label>
+    </div>
+</form>
+</div>
+
+<div id="jstree_id"></div>
 
 <div id="legend" class="map-content">
     <a id="legend-link" target="_blank">Gene Panel &raquo;</a>
@@ -292,31 +304,6 @@
     $(window).on("storage", storageMonitor);
 </script>
 
-<div id="class_tree">
-    <ol id="auto-checkboxes" data-name="foo">
-      <li class="expanded" data-value="0">All classes
-        <ol>
-          <li data-value="1">Class.1</li>
-          <li data-value="2" data-id="2">
-            Astro
-            <ol>
-              <li data-value="3">Astro.1</li>
-              <li data-value="4">Astro.2</li>
-            </ol>
-          </li>
-          <li data-value="5">Class.3</li>
-        </ol>
-      </li>
-    </ol>
-</div>
-
-<script>
-    $('#auto-checkboxes').bonsai({
-      expandAll: true,
-      checkboxes: true,
-      createInputs: 'checkbox'
-    });
-</script>
 
 </body>
 </html>

@@ -57,8 +57,8 @@ function iniScene() {
     CONTROLS = new THREE.OrbitControls(CAMERA, LABEL_RENDERER.domElement);
     // controls.enableDamping = true;
 
-    stats = new Stats();
-    container.appendChild(stats.dom);
+    // stats = new Stats();
+    // container.appendChild(stats.dom);
 
     // var axes = createAxes(1000, SCENE);
     // SCENE.add(axes)

@@ -16,6 +16,8 @@ function iniContent(spots, cellData) {
     INSTANCEDMESH = make_cells_2(cellData);
     SCENE.add(INSTANCEDMESH.front_face.instancedMesh);
 
+    CELL_MESH = SCENE.children.filter(d => d.name==='front_mesh')[0]
+
     // load_dapi()
 
 }

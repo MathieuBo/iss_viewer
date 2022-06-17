@@ -11,7 +11,8 @@ function make_cells_2(data) {
         };
 
     // remove the zero class cells. No need to plot them
-    NON_ZERO_CELLS = data.filter(d => d.color.r + d.color.g + d.color.b !== 0);
+    NON_ZERO_CELLS = data.filter(d => d.topClass !== 'ZeroXXX');
+    // NON_ZERO_CELLS = NON_ZERO_CELLS.filter(d => d.topClass.startsWith('Calb2'))
     // data = [data[0]]
     var front_face = ellipsoids_2(NON_ZERO_CELLS, front_props),
         back_face = ellipsoids_2(NON_ZERO_CELLS, back_props);
@@ -66,7 +67,7 @@ function ellipsoids_2(data, props) {
         !!uScale
     );
 
-    var dummy = new THREE.Object3D();
+    // var dummy = new THREE.Object3D();
     var bbox_items = [];
     var tree = new RBush3D.RBush3D(16)
     console.log('tic')
@@ -75,7 +76,9 @@ function ellipsoids_2(data, props) {
         var coords = data[i].sphere_position,
             scales = data[i].sphere_scale,
             rot = data[i].sphere_rotation,
+            topClass = data[i].topClass,
             color =  data[i].color;
+        var dummy = new THREE.Object3D();
         dummy.position.set(coords.x, coords.y, coords.z);
         dummy.scale.set(scales.x*0.99, scales.y*0.99, scales.z*0.99);
         dummy.rotation.set(rot.x, rot.y, rot.z);
@@ -84,6 +87,10 @@ function ellipsoids_2(data, props) {
         INSTANCEDMESH.setMatrixAt(i, dummy.matrix);
         INSTANCEDMESH.setColorAt(i, new THREE.Color( color.r, color.g, color.b ));
         temp_obj.applyMatrix4(dummy.matrix)
+        if (topClass!='ZeroXXX')
+        {
+            INSTANCE_MATRICES.push({i:i, topClass:topClass, matrix: dummy.matrix, color: rgb2hex(color.r, color.g, color.b)});
+        }
         var bbox = new THREE.Box3().setFromObject(temp_obj);
         bbox_items.push({minX: bbox.min.x, minY: bbox.min.y, minZ: bbox.min.z, maxX: bbox.max.x, maxY: bbox.max.y, maxZ: bbox.max.z, name: 'item_' + i});
         // instancedMesh.geometry.setPositionAt(i, trsCache[i].position);

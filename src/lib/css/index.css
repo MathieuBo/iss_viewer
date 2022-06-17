@@ -369,6 +369,12 @@ table.no-spacing td {
     cursor: pointer;
 }
 
+#legend_2 {
+    top: 9px;
+    left: 250px;
+    cursor: pointer;
+}
+
 .clicks {
     position:absolute;
     top:60px;
